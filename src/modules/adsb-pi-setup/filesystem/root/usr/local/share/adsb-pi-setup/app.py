@@ -349,9 +349,14 @@ def handle_expert_post_request():
         cmdline = "/usr/bin/docker-update-adsb-im"
         subprocess.run(cmdline, timeout=600.0, shell=True)
         return redirect("/expert")
+    if request.form.get("update_feeder_aps") == "go":
+        cmdline = "/usr/bin/feeder-update"
+        subprocess.run(cmdline, timeout=600.0, shell=True)
+        return redirect("/expert")
     if request.form.get("nightly_update") == "go":
         ENV_FILE.update({
             "NIGHTLY_BASE_UPDATE": "1" if request.form.get("nightly_base") else "0",
+            "NIGHTLY_FEEDER_UPDATE": "1" if request.form.get("nightly_feeder") else "0",
             "NIGHTLY_CONTAINER_UPDATE": "1" if request.form.get("nightly_container") else "0",
         })
     if request.form.get("zerotier") == "go":
