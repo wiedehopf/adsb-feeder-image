@@ -251,5 +251,5 @@ class ImStatus:
         self._constants = constants
 
     def check(self):
-        json_url = f"https://adsb.im/api/status"
+        json_url = f"https://test.adsb.im/api/status"
         return generic_get_json(json_url, self._constants.env_by_tags("pack").value)
