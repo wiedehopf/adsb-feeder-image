@@ -906,6 +906,20 @@ class AdsbIm:
         if status == 200:
             self._constants.env_by_tags(["feeder_ip"]).value = ip
 
+        # next check if there were under-voltage events (this is likely only relevant on an RPi)
+        self._constants.env_by_tags("under_voltage").value = False
+        board = self._constants.env_by_tags("board_name").value
+        if board and board.startswith("Raspberry"):
+            try:
+                # yes, we are checking for the string NOT being there - that way check_call works the way we need it here
+                subprocess.check_call(
+                    "dmesg | grep -iv under-voltage",
+                    shell=True,
+                    stdout=subprocess.DEVNULL,
+                )
+            except subprocess.CalledProcessError:
+                self._constants.env_by_tags("under_voltage").value = True
+
         # if we get to show the feeder homepage, the user should have everything figured out
         # and we can remove the pre-installed ssh-keys and password
         if os.path.exists("/opt/adsb/adsb.im.passwd.and.keys"):
