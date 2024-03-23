@@ -33,7 +33,7 @@ if grep -q "bullseye" /etc/os-release ; then
 	# for older Debian the packaged flask is still v1 and too old for our code
 	# on the flipside, bullseye still allows us to use pip to install
 	# systemwide packages - so let's do it this way
-	apt-get install -y --no-install-recommends python3 python3-pip
+	apt-get install -y --no-install-recommends python3 python3-pip chrony
 	pip install --no-cache-dir -r /opt/adsb/adsb-setup/requirements.txt
 	ln -s /usr/local/bin/flask /usr/bin
 	if [ "$BASE_DISTRO" = "raspbian" ] ; then
@@ -41,7 +41,7 @@ if grep -q "bullseye" /etc/os-release ; then
 		sed -i 's/rootwait/rootwait cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1/' /boot/cmdline.txt
 	fi
 else
-	apt-get install -y --no-install-recommends python3 python3-flask python3-requests
+	apt-get install -y --no-install-recommends python3 python3-flask python3-requests chrony
 fi
 
 if [ "$FEEDER_IMAGE_NAME" != "" ] ; then
