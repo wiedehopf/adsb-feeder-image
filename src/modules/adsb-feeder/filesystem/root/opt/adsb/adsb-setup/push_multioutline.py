@@ -31,13 +31,13 @@ try:
 except:
     print_err("failed to write multiOutline.json or heywhatsthat.json")
 else:
-    cmd = f"docker cp {datadir}/multiOutline.json ultrafeeder:/run/readsb/"
+    cmd = ["docker", "cp", f"{datadir}/multiOutline.json", "ultrafeeder:/run/readsb/"]
     try:
         subprocess.run(cmd, shell=True, check=True)
     except subprocess.SubprocessError:
         print_err("failed to push multiOutline.json")
     if hwt_data is not None:
-        cmd = f"docker cp {datadir}/upintheair.json ultrafeeder:/usr/local/share/tar1090/html-webroot/upintheair.json"
+        cmd = ["docker", "cp", f"{datadir}/upintheair.json", "ultrafeeder:/usr/local/share/tar1090/html-webroot/upintheair.json"
         try:
             subprocess.run(cmd, shell=True, check=True)
         except subprocess.SubprocessError:
