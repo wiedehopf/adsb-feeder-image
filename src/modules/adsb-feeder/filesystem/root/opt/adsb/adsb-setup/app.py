@@ -1958,32 +1958,34 @@ class AdsbIm:
                     print_err(f"starting tailscale (args='{ts_args}')")
                     try:
                         subprocess.run(
-                            "/usr/bin/systemctl enable --now tailscaled",
-                            shell=True,
+                            ["/usr/bin/systemctl", "enable", "--now", "tailscaled"],
                             timeout=20.0,
                         )
-                        result = subprocess.run(
-                            f"/usr/bin/tailscale up {ts_args} --accept-dns=false 2> /tmp/out &",
-                            shell=True,
-                            capture_output=False,
-                            timeout=30.0,
+                        proc = subprocess.Popen(
+                            ["/usr/bin/tailscale", "up" ] + f"{ts_args}".split(" ") + ["--accept-dns=false"],
+                            stderr=subprocess.PIPE,
+                            stdout=subprocess.DEVNULL,
                         )
+                        os.set_blocking(proc.stderr.fileno(), False)
                     except:
                         # this really needs a user visible error...
                         print_err("exception trying to set up tailscale - giving up")
                         continue
-                    while True:
-                        sleep(1.0)
-                        with open("/tmp/out") as out:
-                            output = out.read()
-                        # standard tailscale result
-                        match = re.search(r"(https://login\.tailscale.*)", output)
-                        if match:
-                            break
-                        # when using a login-server
-                        match = re.search(r"(https://.*/register/nodekey.*)", output)
-                        if match:
-                            break
+                    else:
+                        startTime = time.time()
+                        while time.time() - startTime < 30:
+                            time.sleep(0.1)
+                            output = proc.stderr.readline()
+                            # standard tailscale result
+                            match = re.search(r"(https://login\.tailscale.*)", output)
+                            if match:
+                                break
+                            # when using a login-server
+                            match = re.search(r"(https://.*/register/nodekey.*)", output)
+                            if match:
+                                break
+
+                        proc.terminate()
 
                     login_link = match.group(1)
                     print_err(f"found login link {login_link}")
