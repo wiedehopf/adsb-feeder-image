@@ -13,7 +13,7 @@ services:
       - VERBOSE_LOG=ON
       # BLOCKBOT blocks bots of which the User Agent contains all or part of these comma-separated strings:
       - BLOCKBOT=
-        bot,LieBaoFast,UCBrowser,MQQBrowser,Mb2345Browser,https://gdnplus.com,facebookexternalhit,google,bing,yandex,msnbot,wp-login.php,zgrab,zgrab2,
+        bot,LieBaoFast,UCBrowser,MQQBrowser,Mb2345Browser,gdnplus.com,facebookexternalhit,google,bing,yandex,msnbot,wp-login.php,zgrab,zgrab2,
         AltaVista,Googlebot,Slurp,BlackWidow,Bot,ChinaClaw,Custo,DISCo,Download,Demon,eCatch,EirGrabber,EmailSiphon,EmailWolf,SuperHTTP,Surfbot,WebWhacker,
         Express,WebPictures,ExtractorPro,EyeNetIE,FlashGet,GetRight,GetWeb!,Go!Zilla,Go-Ahead-Got-It,GrabNet,Grafula,HMView,Go!Zilla,Go-Ahead-Got-It,
         rafula,HMView,HTTrack,Stripper,Sucker,Indy,InterGET,Ninja,JetCar,Spider,larbin,LeechFTP,Downloader,tool,Navroad,NearSite,NetAnts,tAkeOut,WWWOFFLE,
